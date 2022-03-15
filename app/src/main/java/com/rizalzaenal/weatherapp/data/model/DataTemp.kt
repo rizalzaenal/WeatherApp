@@ -3,7 +3,7 @@ package com.rizalzaenal.weatherapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Temp(
+data class DataTemp(
     @SerializedName("day")
     val day: Double?,
     @SerializedName("eve")

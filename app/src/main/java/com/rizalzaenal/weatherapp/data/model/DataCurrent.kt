@@ -3,37 +3,37 @@ package com.rizalzaenal.weatherapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Current(
+data class DataCurrent(
     @SerializedName("clouds")
-    val clouds: Int?,
+    val clouds: Int? = null,
     @SerializedName("dew_point")
-    val dewPoint: Double?,
+    val dewPoint: Double? = null,
     @SerializedName("dt")
-    val dt: Int?,
+    val dt: Int? = null,
     @SerializedName("feels_like")
-    val feelsLike: Double?,
+    val feelsLike: Double? = null,
     @SerializedName("humidity")
-    val humidity: Int?,
+    val humidity: Int? = null,
     @SerializedName("pressure")
-    val pressure: Int?,
+    val pressure: Int? = null,
     @SerializedName("rain")
-    val rain: Rain?,
+    val rain: DataRain? = null,
     @SerializedName("sunrise")
-    val sunrise: Int?,
+    val sunrise: Int? = null,
     @SerializedName("sunset")
-    val sunset: Int?,
+    val sunset: Int? = null,
     @SerializedName("temp")
-    val temp: Double?,
+    val temp: Double? = null,
     @SerializedName("uvi")
-    val uvi: Int?,
+    val uvi: Double? = null,
     @SerializedName("visibility")
-    val visibility: Int?,
+    val visibility: Int? = null,
     @SerializedName("weather")
-    val weather: List<Weather>?,
+    val weather: List<DataWeather>? = listOf(),
     @SerializedName("wind_deg")
-    val windDeg: Int?,
+    val windDeg: Double? = null,
     @SerializedName("wind_gust")
-    val windGust: Double?,
+    val windGust: Double? = null,
     @SerializedName("wind_speed")
-    val windSpeed: Double?
+    val windSpeed: Double? = null
 )

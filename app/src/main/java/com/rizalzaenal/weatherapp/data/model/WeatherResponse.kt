@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 
 data class WeatherResponse(
     @SerializedName("current")
-    val current: Current?,
+    val current: DataCurrent? = null,
     @SerializedName("daily")
-    val daily: List<Daily>?,
+    val daily: List<DataDaily>? = listOf(),
     @SerializedName("hourly")
-    val hourly: List<Hourly>?,
+    val hourly: List<DataHourly>? = listOf(),
     @SerializedName("lat")
-    val lat: Double?,
+    val lat: Double? = null,
     @SerializedName("lon")
-    val lon: Double?,
+    val lon: Double? = null,
     @SerializedName("minutely")
-    val minutely: List<Minutely>?,
+    val minutely: List<DataMinutely>? = listOf(),
     @SerializedName("timezone")
-    val timezone: String?,
+    val timezone: String? = null,
     @SerializedName("timezone_offset")
-    val timezoneOffset: Int?
+    val timezoneOffset: Int? = null
 )

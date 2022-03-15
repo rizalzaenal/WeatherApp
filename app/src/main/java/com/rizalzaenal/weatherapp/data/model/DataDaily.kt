@@ -3,7 +3,7 @@ package com.rizalzaenal.weatherapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Daily(
+data class DataDaily(
     @SerializedName("clouds")
     val clouds: Int?,
     @SerializedName("dew_point")
@@ -11,7 +11,7 @@ data class Daily(
     @SerializedName("dt")
     val dt: Int?,
     @SerializedName("feels_like")
-    val feelsLike: FeelsLike?,
+    val feelsLike: DataFeelsLike?,
     @SerializedName("humidity")
     val humidity: Int?,
     @SerializedName("moon_phase")
@@ -21,7 +21,7 @@ data class Daily(
     @SerializedName("moonset")
     val moonset: Int?,
     @SerializedName("pop")
-    val pop: Int?,
+    val pop: Double?,
     @SerializedName("pressure")
     val pressure: Int?,
     @SerializedName("rain")
@@ -31,11 +31,11 @@ data class Daily(
     @SerializedName("sunset")
     val sunset: Int?,
     @SerializedName("temp")
-    val temp: Temp?,
+    val temp: DataTemp?,
     @SerializedName("uvi")
     val uvi: Double?,
     @SerializedName("weather")
-    val weather: List<Weather>?,
+    val weather: List<DataWeather>?,
     @SerializedName("wind_deg")
     val windDeg: Int?,
     @SerializedName("wind_gust")

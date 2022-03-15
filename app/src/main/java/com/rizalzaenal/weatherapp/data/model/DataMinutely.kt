@@ -3,7 +3,7 @@ package com.rizalzaenal.weatherapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Minutely(
+data class DataMinutely(
     @SerializedName("dt")
     val dt: Int?,
     @SerializedName("precipitation")

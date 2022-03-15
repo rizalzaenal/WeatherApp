@@ -3,7 +3,7 @@ package com.rizalzaenal.weatherapp.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Hourly(
+data class DataHourly(
     @SerializedName("clouds")
     val clouds: Int?,
     @SerializedName("dew_point")
@@ -19,15 +19,15 @@ data class Hourly(
     @SerializedName("pressure")
     val pressure: Int?,
     @SerializedName("rain")
-    val rain: Rain?,
+    val rain: DataRain?,
     @SerializedName("temp")
     val temp: Double?,
     @SerializedName("uvi")
-    val uvi: Int?,
+    val uvi: Double?,
     @SerializedName("visibility")
     val visibility: Int?,
     @SerializedName("weather")
-    val weather: List<Weather>?,
+    val weather: List<DataWeather>?,
     @SerializedName("wind_deg")
     val windDeg: Int?,
     @SerializedName("wind_gust")
