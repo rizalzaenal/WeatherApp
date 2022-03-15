@@ -14,8 +14,6 @@ data class WeatherResponse(
     val lat: Double? = null,
     @SerializedName("lon")
     val lon: Double? = null,
-    @SerializedName("minutely")
-    val minutely: List<DataMinutely>? = listOf(),
     @SerializedName("timezone")
     val timezone: String? = null,
     @SerializedName("timezone_offset")
