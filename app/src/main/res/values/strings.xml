@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="desc_overflow_button">More menu icon</string>
+    <string name="favorites">Favorites location</string>
+    <string name="desc_search_icon">Search icon</string>
+    <string name="desc_weather_icon">weather condition illustration</string>
+    <string name="humidity">Humidity: %d</string>
+    <string name="wind_speed">Wind speed: %.1f meter/sec</string>
+    <string name="rain_volume">Rain volume: %.1f mm</string>
 </resources>

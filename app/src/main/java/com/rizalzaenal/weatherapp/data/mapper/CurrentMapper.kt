@@ -17,7 +17,8 @@ class CurrentMapper: Mapper<DataCurrent, Daily> {
             data.rain?.h.replaceNull(),
             data.sunrise.replaceNull(),
             data.sunset.replaceNull(),
-            data.temp.replaceNull()
+            data.temp.replaceNull(),
+            data.windSpeed.replaceNull()
         )
     }
 

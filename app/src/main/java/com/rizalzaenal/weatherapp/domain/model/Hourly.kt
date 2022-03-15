@@ -2,7 +2,7 @@ package com.rizalzaenal.weatherapp.domain.model
 
 data class Hourly(
     val weather: Weather,
-    val unixDateTime: Int,
+    val unixDateTime: Long,
     val humidity: Int,
     val lastHourRainVolume: Double,
     val temp: Double

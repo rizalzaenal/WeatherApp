@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_temp_size">32sp</dimen>
+    <dimen name="daily_item_width">350dp</dimen>
+    <dimen name="weather_icon_size">150dp</dimen>
+    <dimen name="hourly_weather_icon_size">50dp</dimen>
+</resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.rizalzaenal.weatherapp.domain.model.WeatherForecast
 import com.rizalzaenal.weatherapp.domain.usecase.GetWeatherForecastUseCase
 import com.rizalzaenal.weatherapp.presentation.State
+import com.rizalzaenal.weatherapp.utils.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,8 +24,8 @@ class WeatherViewModel @Inject constructor(private val getWeatherForecastUseCase
             try {
                 val weatherForecast = getWeatherForecastUseCase(latitude, longitude)
                 _weatherForecastState.value = State.Success(weatherForecast)
-            } catch (e: Throwable) {
-                _weatherForecastState.value = State.Error(e)
+            } catch (e: Exception) {
+                _weatherForecastState.value = getErrorMessage(e)
             }
 
         }

@@ -15,7 +15,8 @@ class DailyMapper: Mapper<DataDaily, Daily> {
             data.rain.replaceNull(),
             data.sunrise.replaceNull(),
             data.sunset.replaceNull(),
-            data.temp?.day.replaceNull()
+            data.temp?.day.replaceNull(),
+            data.windSpeed.replaceNull()
         )
     }
 

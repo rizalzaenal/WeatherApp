@@ -9,7 +9,7 @@ data class DataCurrent(
     @SerializedName("dew_point")
     val dewPoint: Double? = null,
     @SerializedName("dt")
-    val dt: Int? = null,
+    val dt: Long? = null,
     @SerializedName("feels_like")
     val feelsLike: Double? = null,
     @SerializedName("humidity")
