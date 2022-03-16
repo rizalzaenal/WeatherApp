@@ -21,13 +21,14 @@ import com.rizalzaenal.weatherapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment(R.layout.fragment_weather) {
     private var _binding: FragmentWeatherBinding? = null
-    val binding: FragmentWeatherBinding get() = _binding!!
+    private val binding: FragmentWeatherBinding get() = _binding!!
     private val viewModel: WeatherViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,25 +37,16 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         addListener()
         initRecyclerView()
         collectState()
-
-
-        //viewModel.getWeatherForecast(-6.9344694, 107.6049539)
+        viewModel.getWeatherForecast()
     }
 
     private fun addListener() {
-        binding.ivOverflow.setOnClickListener {
-            showMenu()
-        }
-
+        binding.ivOverflow.setOnClickListener { showMenu() }
         binding.ivSearch.setOnClickListener {
             findNavController().navigate(WeatherFragmentDirections.toSearchFragment())
         }
-
-        binding.swipeRefresh.setOnRefreshListener {
-            val location = getNavigationResult<Location>("Location")
-            viewModel.getWeatherForecast(location)
-            binding.tvLocationName.text = location?.name
-        }
+        binding.swipeRefresh.setOnRefreshListener { viewModel.getWeatherForecast() }
+        binding.ivFavorite.setOnClickListener { viewModel.onFavoriteClick() }
     }
 
     private fun collectState() {
@@ -77,21 +69,25 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                                     setItems(it.data.hourly)
                                 }
                                 binding.cardCurrent.apply {
-                                    val timeStampWithOffset = it.data.current.unixDateTime + it.data.timezoneOffset
+                                    val timeStampWithOffset =
+                                        it.data.current.unixDateTime + it.data.timezoneOffset
                                     ivWeatherIcon.loadWeatherIcon(it.data.current.weather.icon)
                                     tvTemp.text = it.data.current.temp.roundTemp()
                                     tvTempDesc.text = it.data.current.weather.description
                                     tvDate.text = getHourFromEpoch(timeStampWithOffset)
-                                    tvHumidity.text = getString(R.string.humidity, it.data.current.humidity)
-                                    tvRainVolume.text = getString(R.string.rain_volume, it.data.current.lastHourRainVolume)
-
+                                    tvHumidity.text =
+                                        getString(R.string.humidity, it.data.current.humidity)
+                                    tvRainVolume.text = getString(
+                                        R.string.rain_volume,
+                                        it.data.current.lastHourRainVolume
+                                    )
                                 }
                             }
                             is State.Error -> {
                                 binding.swipeRefresh.isRefreshing = false
                                 Snackbar.make(binding.root, it.message, Snackbar.LENGTH_LONG)
                                     .setAction("Try again") {
-                                        viewModel.getWeatherForecast(getNavigationResult("Location"))
+                                        viewModel.getWeatherForecast()
                                     }
                                     .show()
                             }
@@ -101,24 +97,42 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
             }
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Location>("Location")
-            ?.observe(viewLifecycleOwner) { loc ->
-                loc?.let {
-                    binding.tvLocationName.text = it.name
-                    viewModel.getWeatherForecast(it)
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.locationState
+                    .filterNotNull()
+                    .collect {
+                        binding.tvLocationName.text = it.name
+                    }
             }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.favoriteState
+                    .collect {
+                        if (it) {
+                            binding.ivFavorite.setImageResource(R.drawable.icon_heart_filled)
+                        } else {
+                            binding.ivFavorite.setImageResource(R.drawable.icon_heart_outline)
+                        }
+                    }
+            }
+        }
+
     }
 
     private fun initRecyclerView() {
         binding.rvDaily.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = DailyAdapter()
             LinearSnapHelper().attachToRecyclerView(binding.rvDaily)
         }
 
         binding.rvHourly.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = HourlyAdapter()
         }
     }
@@ -133,7 +147,9 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                     Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
                     return@setOnMenuItemClickListener true
                 }
-                else -> { return@setOnMenuItemClickListener false }
+                else -> {
+                    return@setOnMenuItemClickListener false
+                }
             }
         }
     }

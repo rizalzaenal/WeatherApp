@@ -77,7 +77,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = SearchAdapter {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set("Location", it)
+                //findNavController().previousBackStackEntry?.savedStateHandle?.set("Location", it)
+                viewModel.setLatestLocation(it)
                 findNavController().popBackStack()
             }
 

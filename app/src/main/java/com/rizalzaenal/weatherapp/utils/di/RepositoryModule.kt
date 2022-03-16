@@ -1,6 +1,8 @@
 package com.rizalzaenal.weatherapp.utils.di
 
 import com.rizalzaenal.weatherapp.data.WeatherService
+import com.rizalzaenal.weatherapp.data.local.FavoriteLocationsDao
+import com.rizalzaenal.weatherapp.data.local.LatestLocationDao
 import com.rizalzaenal.weatherapp.data.repository.LocationRepositoryImpl
 import com.rizalzaenal.weatherapp.data.repository.WeatherRepositoryImpl
 import com.rizalzaenal.weatherapp.domain.repository.LocationRepository
@@ -23,8 +25,12 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideLocationRepository(service: WeatherService): LocationRepository {
-        return LocationRepositoryImpl(service)
+    fun provideLocationRepository(
+        service: WeatherService,
+        favoriteLocationsDao: FavoriteLocationsDao,
+        latestLocationDao: LatestLocationDao
+    ): LocationRepository {
+        return LocationRepositoryImpl(service, favoriteLocationsDao, latestLocationDao)
     }
 
 }

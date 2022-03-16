@@ -3,6 +3,9 @@ package com.rizalzaenal.weatherapp.utils.di
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.rizalzaenal.weatherapp.data.WeatherService
+import com.rizalzaenal.weatherapp.data.local.AppDatabase
+import com.rizalzaenal.weatherapp.data.local.FavoriteLocationsDao
+import com.rizalzaenal.weatherapp.data.local.LatestLocationDao
 import com.rizalzaenal.weatherapp.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -16,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+class DataModule {
 
     @Provides
     @Singleton
@@ -42,5 +45,23 @@ class NetworkModule {
     @Singleton
     fun provideWeatherService(retrofit: Retrofit): WeatherService {
         return retrofit.create(WeatherService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return AppDatabase.create(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavoriteLocationsDao(db: AppDatabase): FavoriteLocationsDao {
+        return db.favoriteLocationsDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLatestLocationDao(db: AppDatabase): LatestLocationDao {
+        return db.latestLocationDao()
     }
 }

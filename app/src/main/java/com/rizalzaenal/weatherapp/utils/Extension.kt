@@ -38,7 +38,7 @@ fun Double.roundTemp(metric: String = "°C"): String {
 
 fun getHourFromEpoch(timeStamp: Long): String {
     val date = Date(timeStamp * 1000)
-    val sdf = SimpleDateFormat("HH:mm aa", Locale.getDefault())
+    val sdf = SimpleDateFormat("hh:mm aa", Locale.getDefault())
     sdf.timeZone = TimeZone.getTimeZone("UTC")
     return sdf.format(date)
 }
@@ -50,9 +50,9 @@ fun getDayFromEpoch(timeStamp: Long): String {
     return sdf.format(date)
 }
 
-fun <T> Fragment.getNavigationResult(key: String) =
-    findNavController().currentBackStackEntry?.savedStateHandle?.get<T>(key)
-
-fun <T> Fragment.setNavigationResult(result: T, key: String) {
-    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
-}
+//fun <T> Fragment.getNavigationResult(key: String) =
+//    findNavController().currentBackStackEntry?.savedStateHandle?.get<T>(key)
+//
+//fun <T> Fragment.setNavigationResult(result: T, key: String) {
+//    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
+//}

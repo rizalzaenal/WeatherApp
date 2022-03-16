@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rizalzaenal.weatherapp.domain.model.Location
 import com.rizalzaenal.weatherapp.domain.usecase.GetLocationsUseCase
+import com.rizalzaenal.weatherapp.domain.usecase.SetLatestLocationUseCase
 import com.rizalzaenal.weatherapp.presentation.State
 import com.rizalzaenal.weatherapp.utils.getErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,9 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val getLocationsUseCase: GetLocationsUseCase): ViewModel() {
+class SearchViewModel @Inject constructor(
+    private val getLocationsUseCase: GetLocationsUseCase,
+    private val setLatestLocationUseCase: SetLatestLocationUseCase
+) : ViewModel() {
     private val _searchState = MutableStateFlow<State<List<Location>>>(State.Empty)
-    val searchState : StateFlow<State<List<Location>>> = _searchState
+    val searchState: StateFlow<State<List<Location>>> = _searchState
 
     fun getLocations(query: String) {
         _searchState.value = State.Loading
@@ -28,6 +32,12 @@ class SearchViewModel @Inject constructor(private val getLocationsUseCase: GetLo
                 //to emit error value only once, error state replaced after emitted
                 _searchState.value = State.Empty
             }
+        }
+    }
+
+    fun setLatestLocation(location: Location) {
+        viewModelScope.launch {
+            setLatestLocationUseCase(location)
         }
     }
 
