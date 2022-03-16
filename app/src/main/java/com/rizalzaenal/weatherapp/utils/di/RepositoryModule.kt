@@ -1,7 +1,9 @@
 package com.rizalzaenal.weatherapp.utils.di
 
 import com.rizalzaenal.weatherapp.data.WeatherService
+import com.rizalzaenal.weatherapp.data.repository.LocationRepositoryImpl
 import com.rizalzaenal.weatherapp.data.repository.WeatherRepositoryImpl
+import com.rizalzaenal.weatherapp.domain.repository.LocationRepository
 import com.rizalzaenal.weatherapp.domain.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
@@ -17,6 +19,12 @@ class RepositoryModule {
     @Singleton
     fun provideWeatherRepository(service: WeatherService): WeatherRepository {
         return WeatherRepositoryImpl(service)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationRepository(service: WeatherService): LocationRepository {
+        return LocationRepositoryImpl(service)
     }
 
 }

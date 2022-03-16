@@ -2,6 +2,7 @@ package com.rizalzaenal.weatherapp.presentation.weather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rizalzaenal.weatherapp.domain.model.Location
 import com.rizalzaenal.weatherapp.domain.model.WeatherForecast
 import com.rizalzaenal.weatherapp.domain.usecase.GetWeatherForecastUseCase
 import com.rizalzaenal.weatherapp.presentation.State
@@ -15,17 +16,25 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(private val getWeatherForecastUseCase: GetWeatherForecastUseCase) :
     ViewModel() {
-    private val _weatherForecastState = MutableStateFlow<State<WeatherForecast>>(State.Init)
+    private val _weatherForecastState = MutableStateFlow<State<WeatherForecast>>(State.Empty)
     val weatherForecastState: StateFlow<State<WeatherForecast>> = _weatherForecastState
 
-    fun getWeatherForecast(latitude: Double, longitude: Double) {
+    fun getWeatherForecast(location: Location?) {
+        _weatherForecastState.value = State.Loading
+        if (location == null) {
+            _weatherForecastState.value = State.Error("Please choose location first")
+            //to emit error value only once, error state replaced after emitted
+            _weatherForecastState.value = State.Empty
+            return
+        }
         viewModelScope.launch {
-            _weatherForecastState.value = State.Loading
             try {
-                val weatherForecast = getWeatherForecastUseCase(latitude, longitude)
+                val weatherForecast = getWeatherForecastUseCase(location.lat, location.lon)
                 _weatherForecastState.value = State.Success(weatherForecast)
             } catch (e: Exception) {
                 _weatherForecastState.value = getErrorMessage(e)
+                //to emit error value only once, error state replaced after emitted
+                _weatherForecastState.value = State.Empty
             }
 
         }

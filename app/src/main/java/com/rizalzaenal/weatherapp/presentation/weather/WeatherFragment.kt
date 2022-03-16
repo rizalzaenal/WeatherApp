@@ -9,17 +9,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.rizalzaenal.weatherapp.R
 import com.rizalzaenal.weatherapp.databinding.FragmentWeatherBinding
+import com.rizalzaenal.weatherapp.domain.model.Location
 import com.rizalzaenal.weatherapp.presentation.State
-import com.rizalzaenal.weatherapp.utils.getHourFromEpoch
-import com.rizalzaenal.weatherapp.utils.loadWeatherIcon
-import com.rizalzaenal.weatherapp.utils.roundTemp
+import com.rizalzaenal.weatherapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -36,7 +37,8 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         initRecyclerView()
         collectState()
 
-        viewModel.getWeatherForecast(-6.9344694, 107.6049539)
+
+        //viewModel.getWeatherForecast(-6.9344694, 107.6049539)
     }
 
     private fun addListener() {
@@ -45,11 +47,13 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         }
 
         binding.ivSearch.setOnClickListener {
-            Toast.makeText(requireContext(), "search", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(WeatherFragmentDirections.toSearchFragment())
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.getWeatherForecast(-6.9344694, 107.6049539)
+            val location = getNavigationResult<Location>("Location")
+            viewModel.getWeatherForecast(location)
+            binding.tvLocationName.text = location?.name
         }
     }
 
@@ -64,7 +68,6 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                             }
                             is State.Success -> {
                                 binding.swipeRefresh.isRefreshing = false
-                                binding.tvLocationName.text = it.data.timezone
                                 (binding.rvDaily.adapter as DailyAdapter).apply {
                                     timeZoneOffset = it.data.timezoneOffset
                                     setItems(it.data.daily)
@@ -88,7 +91,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                                 binding.swipeRefresh.isRefreshing = false
                                 Snackbar.make(binding.root, it.message, Snackbar.LENGTH_LONG)
                                     .setAction("Try again") {
-                                        viewModel.getWeatherForecast(-6.9344694, 107.6049539)
+                                        viewModel.getWeatherForecast(getNavigationResult("Location"))
                                     }
                                     .show()
                             }
@@ -97,6 +100,14 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                     }
             }
         }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Location>("Location")
+            ?.observe(viewLifecycleOwner) { loc ->
+                loc?.let {
+                    binding.tvLocationName.text = it.name
+                    viewModel.getWeatherForecast(it)
+                }
+            }
     }
 
     private fun initRecyclerView() {

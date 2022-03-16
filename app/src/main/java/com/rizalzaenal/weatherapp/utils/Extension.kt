@@ -1,8 +1,10 @@
 package com.rizalzaenal.weatherapp.utils
 
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import java.sql.Timestamp
+import com.rizalzaenal.weatherapp.domain.model.Location
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -46,4 +48,11 @@ fun getDayFromEpoch(timeStamp: Long): String {
     val sdf = SimpleDateFormat("EEEE", Locale.getDefault())
     sdf.timeZone = TimeZone.getTimeZone("UTC")
     return sdf.format(date)
+}
+
+fun <T> Fragment.getNavigationResult(key: String) =
+    findNavController().currentBackStackEntry?.savedStateHandle?.get<T>(key)
+
+fun <T> Fragment.setNavigationResult(result: T, key: String) {
+    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
 }
