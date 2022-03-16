@@ -50,7 +50,6 @@ class WeatherViewModel @Inject constructor(
 
                 val weatherForecast = getWeatherForecastUseCase(location.lat, location.lon)
                 _weatherForecastState.value = State.Success(weatherForecast)
-                //addFavoriteLocationUseCase(location)
             } catch (e: Exception) {
                 _weatherForecastState.value = getErrorMessage(e)
                 _weatherForecastState.value = State.Empty

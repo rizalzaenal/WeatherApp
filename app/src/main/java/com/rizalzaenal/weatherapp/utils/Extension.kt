@@ -49,10 +49,3 @@ fun getDayFromEpoch(timeStamp: Long): String {
     sdf.timeZone = TimeZone.getTimeZone("UTC")
     return sdf.format(date)
 }
-
-//fun <T> Fragment.getNavigationResult(key: String) =
-//    findNavController().currentBackStackEntry?.savedStateHandle?.get<T>(key)
-//
-//fun <T> Fragment.setNavigationResult(result: T, key: String) {
-//    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, result)
-//}

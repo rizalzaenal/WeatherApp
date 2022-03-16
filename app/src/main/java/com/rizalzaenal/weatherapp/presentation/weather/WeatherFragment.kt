@@ -15,12 +15,10 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import com.google.android.material.snackbar.Snackbar
 import com.rizalzaenal.weatherapp.R
 import com.rizalzaenal.weatherapp.databinding.FragmentWeatherBinding
-import com.rizalzaenal.weatherapp.domain.model.Location
 import com.rizalzaenal.weatherapp.presentation.State
 import com.rizalzaenal.weatherapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -86,10 +84,9 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                             is State.Error -> {
                                 binding.swipeRefresh.isRefreshing = false
                                 Snackbar.make(binding.root, it.message, Snackbar.LENGTH_LONG)
-                                    .setAction("Try again") {
+                                    .setAction(R.string.try_again) {
                                         viewModel.getWeatherForecast()
-                                    }
-                                    .show()
+                                    }.show()
                             }
                             else -> {}
                         }
@@ -144,7 +141,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
         popup.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.favorite -> {
-                    Toast.makeText(requireContext(), "clicked", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(WeatherFragmentDirections.toFavoritesFragment())
                     return@setOnMenuItemClickListener true
                 }
                 else -> {

@@ -46,7 +46,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun collectState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-
                 viewModel.searchState
                     .collect {
                         when (it) {
@@ -60,10 +59,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                             is State.Error -> {
                                 binding.progressBar.visibility = View.GONE
                                 Snackbar.make(binding.root, it.message, Snackbar.LENGTH_LONG)
-                                    .setAction("Try again") {
-
-                                    }
-                                    .show()
+                                    .setAction(R.string.try_again) {
+                                        viewModel.getLocations(binding.edittext.text.toString())
+                                    }.show()
                             }
                             else -> {}
                         }
@@ -77,7 +75,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = SearchAdapter {
-                //findNavController().previousBackStackEntry?.savedStateHandle?.set("Location", it)
                 viewModel.setLatestLocation(it)
                 findNavController().popBackStack()
             }
