@@ -1,10 +1,7 @@
 package com.rizalzaenal.weatherapp.utils
 
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.rizalzaenal.weatherapp.domain.model.Location
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -31,12 +28,13 @@ fun ImageView.loadWeatherIcon(icon: String) {
         .into(this)
 }
 
-fun Double.roundTemp(metric: String = "°C"): String {
+fun Double.roundAndAddTempMetric(metric: String = "°C"): String {
     val rounded = this.roundToInt()
     return "$rounded$metric"
 }
 
 fun getHourFromEpoch(timeStamp: Long): String {
+    //timeStamp times 1000 to changes from second epoch to millisecond
     val date = Date(timeStamp * 1000)
     val sdf = SimpleDateFormat("hh:mm aa", Locale.getDefault())
     sdf.timeZone = TimeZone.getTimeZone("UTC")
@@ -44,6 +42,7 @@ fun getHourFromEpoch(timeStamp: Long): String {
 }
 
 fun getDayFromEpoch(timeStamp: Long): String {
+    //timeStamp times 1000 to changes from second epoch to millisecond
     val date = Date(timeStamp * 1000)
     val sdf = SimpleDateFormat("EEEE", Locale.getDefault())
     sdf.timeZone = TimeZone.getTimeZone("UTC")

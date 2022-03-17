@@ -2,7 +2,6 @@ package com.rizalzaenal.weatherapp.presentation.weather
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -70,7 +69,7 @@ class WeatherFragment : Fragment(R.layout.fragment_weather) {
                                     val timeStampWithOffset =
                                         it.data.current.unixDateTime + it.data.timezoneOffset
                                     ivWeatherIcon.loadWeatherIcon(it.data.current.weather.icon)
-                                    tvTemp.text = it.data.current.temp.roundTemp()
+                                    tvTemp.text = it.data.current.temp.roundAndAddTempMetric()
                                     tvTempDesc.text = it.data.current.weather.description
                                     tvDate.text = getHourFromEpoch(timeStampWithOffset)
                                     tvHumidity.text =

@@ -8,7 +8,7 @@ import com.rizalzaenal.weatherapp.databinding.DailyItemBinding
 import com.rizalzaenal.weatherapp.domain.model.Daily
 import com.rizalzaenal.weatherapp.utils.getDayFromEpoch
 import com.rizalzaenal.weatherapp.utils.loadWeatherIcon
-import com.rizalzaenal.weatherapp.utils.roundTemp
+import com.rizalzaenal.weatherapp.utils.roundAndAddTempMetric
 
 class DailyAdapter: RecyclerView.Adapter<DailyAdapter.DailyViewHolder>() {
     private val data: ArrayList<Daily> = arrayListOf()
@@ -35,7 +35,7 @@ class DailyAdapter: RecyclerView.Adapter<DailyAdapter.DailyViewHolder>() {
 
     class DailyViewHolder(private val binding: DailyItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Daily, timezoneOffset: Int) {
-            binding.tvTemp.text = data.temp.roundTemp()
+            binding.tvTemp.text = data.temp.roundAndAddTempMetric()
             binding.tvTempDesc.text = data.weather.description
             binding.ivWeatherIcon.loadWeatherIcon(data.weather.icon)
             binding.tvDate.text = getDayFromEpoch(data.unixDateTime + timezoneOffset)

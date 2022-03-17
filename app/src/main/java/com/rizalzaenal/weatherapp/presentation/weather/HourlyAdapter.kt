@@ -7,7 +7,7 @@ import com.rizalzaenal.weatherapp.databinding.HourlyItemBinding
 import com.rizalzaenal.weatherapp.domain.model.Hourly
 import com.rizalzaenal.weatherapp.utils.getHourFromEpoch
 import com.rizalzaenal.weatherapp.utils.loadWeatherIcon
-import com.rizalzaenal.weatherapp.utils.roundTemp
+import com.rizalzaenal.weatherapp.utils.roundAndAddTempMetric
 
 class HourlyAdapter: RecyclerView.Adapter<HourlyAdapter.HourlyViewHolder>() {
     private val data: ArrayList<Hourly> = arrayListOf()
@@ -34,7 +34,7 @@ class HourlyAdapter: RecyclerView.Adapter<HourlyAdapter.HourlyViewHolder>() {
 
     class HourlyViewHolder(private val binding: HourlyItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Hourly, timezoneOffset: Int) {
-            binding.tvTemp.text = data.temp.roundTemp()
+            binding.tvTemp.text = data.temp.roundAndAddTempMetric()
             binding.ivWeatherIcon.loadWeatherIcon(data.weather.icon)
             binding.tvTime.text = getHourFromEpoch(data.unixDateTime + timezoneOffset)
 
